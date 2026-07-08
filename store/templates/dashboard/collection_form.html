@@ -1,0 +1,53 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Collection{% endblock %}{% block heading %}{% if col %}Edit{% else %}New{% endif %} collection{% endblock %}
+{% block content %}
+<a href="{% url 'dash_collections' %}" class="text-[14px]" style="color:var(--muted);text-decoration:none">← Collections</a>
+<form method="post" enctype="multipart/form-data" class="dash-form glass rounded-2xl p-6 mt-4" style="max-width:760px">
+  {% csrf_token %}
+  <div class="grid sm:grid-cols-2 gap-4">
+    {% for f in form %}
+    <div class="{% if f.name == 'description' %}sm:col-span-2{% endif %}"><label>{{ f.label }}</label>{{ f }}{% if f.errors %}<div class="text-[12px]" style="color:#e7758a">{{ f.errors|striptags }}</div>{% endif %}</div>
+    {% endfor %}
+  </div>
+
+  <!-- existing images -->
+  {% if col %}
+  <div class="mt-6"><label>Current images</label>
+    <div class="flex flex-wrap gap-2 mt-1">
+      {% for im in col.images.all %}
+      <div style="position:relative"><img src="{{ im.image.url }}" style="width:90px;height:66px;object-fit:cover;border-radius:10px">
+        <a href="{% url 'dash_collimage_delete' im.pk %}" title="Remove" style="position:absolute;top:-6px;right:-6px;background:#e7758a;color:#fff;border-radius:99px;width:20px;height:20px;display:grid;place-items:center;text-decoration:none;font-size:12px">✕</a></div>
+      {% empty %}<span class="text-[13px]" style="color:var(--muted)">No images yet.</span>{% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  <div class="mt-4"><label>Add images (you can select multiple)</label><input type="file" name="new_images" accept="image/*" multiple></div>
+
+  <!-- existing dimensions -->
+  {% if col %}
+  <div class="mt-6"><label>Current sizes</label>
+    <div class="space-y-1 mt-1">
+      {% for d in col.dimensions.all %}
+      <div class="flex items-center justify-between glass2 rounded-lg px-3 py-2 text-[13px]" style="color:var(--text)"><span>{{ d.label }} · Rs {{ d.price }} · stock {{ d.stock }}</span><a href="{% url 'dash_colldim_delete' d.pk %}" style="color:#e7758a;text-decoration:none">remove</a></div>
+      {% empty %}<span class="text-[13px]" style="color:var(--muted)">No sizes yet.</span>{% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  <div class="mt-4"><label>Add sizes (width × height in cm, price, stock)</label>
+    <div class="space-y-2 mt-1">
+      {% for i in "123" %}
+      <div class="grid grid-cols-4 gap-2">
+        <input type="number" name="dim_w" placeholder="W cm"><input type="number" name="dim_h" placeholder="H cm">
+        <input type="number" name="dim_price" step="0.01" placeholder="Price Rs "><input type="number" name="dim_stock" placeholder="Stock">
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="mt-6 flex gap-3">
+    <button class="rounded-full px-7 py-3 text-[14.5px] font-semibold" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);border:none">Save</button>
+    <a href="{% url 'dash_collections' %}" class="rounded-full px-7 py-3 text-[14.5px] font-semibold glass" style="color:var(--text);text-decoration:none">Done</a>
+  </div>
+  {% if not col %}<div class="text-[12px] mt-3" style="color:var(--muted)">Save once to create the collection, then add images & sizes.</div>{% endif %}
+</form>
+{% endblock %}

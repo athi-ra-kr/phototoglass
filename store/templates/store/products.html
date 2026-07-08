@@ -1,0 +1,25 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="max-w-[1560px] mx-auto px-6 md:px-8 py-10 md:py-14">
+  {% if pcat %}
+    <a href="{% url 'products' %}" class="text-[14px]" style="color:var(--muted);text-decoration:none">← All products</a>
+    {% include "store/partials/pagehead.html" with kicker="Shop" heading=pcat.name sub=pcat.description %}
+  {% else %}
+    {% include "store/partials/pagehead.html" with kicker="Shop" heading="Products" sub="Every piece is printed on premium 5 mm glass. Choose a ready-made design, personalize a gift, or design your own." %}
+  {% endif %}
+
+  {% if pcats %}
+  <div class="flex flex-wrap gap-2 mb-7">
+    <a href="{% url 'products' %}" class="rounded-full px-4 py-2 text-[13px] {% if not pcat %}font-semibold{% endif %}" style="text-decoration:none;{% if not pcat %}background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText){% else %}border:1px solid var(--border);color:var(--text){% endif %}">All</a>
+    {% for c in pcats %}
+    <a href="{% url 'product_category' c.id %}" class="rounded-full px-4 py-2 text-[13px]" style="text-decoration:none;{% if pcat.id == c.id %}background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);font-weight:600{% else %}border:1px solid var(--border);color:var(--text){% endif %}">{{ c.name }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    {% for p in products %}{% include "store/partials/product_card.html" %}{% empty %}
+    <div class="glass rounded-2xl p-8 text-center" style="color:var(--muted)">No products yet.</div>{% endfor %}
+  </div>
+</div>
+{% endblock %}

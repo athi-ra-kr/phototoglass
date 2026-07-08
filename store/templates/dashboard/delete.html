@@ -1,0 +1,12 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Delete{% endblock %}{% block heading %}Delete{% endblock %}
+{% block content %}
+<div class="glass rounded-2xl p-6" style="max-width:480px">
+  <p class="text-[15px] mb-1" style="color:var(--text)">Delete this {{ cfg.label|lower }}?</p>
+  <p class="text-[14px] mb-5" style="color:var(--muted)">“{{ obj }}” will be permanently removed.</p>
+  <form method="post" class="flex gap-3">{% csrf_token %}
+    <button class="rounded-full px-6 py-2.5 text-[14px] font-semibold" style="background:#e7758a;color:#1a0008;border:none">Yes, delete</button>
+    <a href="{{ cancel }}" class="rounded-full px-6 py-2.5 text-[14px] font-semibold glass" style="color:var(--text);text-decoration:none">Cancel</a>
+  </form>
+</div>
+{% endblock %}

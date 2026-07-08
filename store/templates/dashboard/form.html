@@ -1,0 +1,38 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}{{ cfg.label }}{% endblock %}
+{% block heading %}{% if instance %}Edit{% else %}New{% endif %} {{ cfg.label|lower }}{% endblock %}
+{% block content %}
+<a href="{% if is_site %}{% url 'dash' %}{% else %}{% url 'dash_list' key %}{% endif %}" class="text-[14px]" style="color:var(--muted);text-decoration:none">← Back</a>
+<form method="post" enctype="multipart/form-data" class="dash-form glass rounded-2xl p-6 mt-4" style="max-width:680px">
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div style="color:#e7758a" class="mb-3 text-[13px]">{{ form.non_field_errors }}</div>{% endif %}
+  <div class="grid sm:grid-cols-2 gap-4">
+    {% for f in form %}
+    <div class="{% if f.name == 'description' or f.name == 'answer' or f.name == 'subtitle' or f.name == 'frames' %}sm:col-span-2{% endif %}">
+      <label>{{ f.label }}</label>
+      {{ f }}
+      {% if f.help_text %}<div class="text-[11.5px] mt-1" style="color:var(--muted)">{{ f.help_text }}</div>{% endif %}
+      {% if f.errors %}<div class="text-[12px] mt-1" style="color:#e7758a">{{ f.errors|striptags }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <!-- live preview for gradient + motif -->
+  <div id="prev-wrap" class="mt-5" style="display:none">
+    <label style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);display:block;margin-bottom:6px">Preview</label>
+    <div id="prev" class="rounded-2xl" style="height:120px;display:grid;place-items:center;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.18)"><span id="prev-motif" style="font-size:48px"></span></div>
+  </div>
+  <div class="mt-6 flex gap-3">
+    <button class="rounded-full px-7 py-3 text-[14.5px] font-semibold" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);border:none">Save</button>
+    <a href="{% if is_site %}{% url 'dash' %}{% else %}{% url 'dash_list' key %}{% endif %}" class="rounded-full px-7 py-3 text-[14.5px] font-semibold glass" style="color:var(--text);text-decoration:none">Cancel</a>
+  </div>
+</form>
+<script>
+  (function(){
+    var g=document.querySelector('[name=gradient]'), m=document.querySelector('[name=motif]');
+    var wrap=document.getElementById('prev-wrap'), prev=document.getElementById('prev'), pm=document.getElementById('prev-motif');
+    if(!g) return; wrap.style.display='block';
+    function upd(){ prev.style.background=g.value||'var(--glass2)'; pm.textContent=m?m.value:''; }
+    g.addEventListener('input',upd); if(m) m.addEventListener('input',upd); upd();
+  })();
+</script>
+{% endblock %}

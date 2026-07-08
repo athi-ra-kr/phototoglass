@@ -1,0 +1,18 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="max-w-[1560px] mx-auto px-6 md:px-8 py-10 md:py-14">
+  {% include "store/partials/pagehead.html" with kicker="Ideas" heading="Inspiration" sub="Guides, galleries and stories to help you create something you'll love." %}
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+    {% for t,d,e,url in nav_cards %}{% endfor %}
+    <a href="{% url 'blog' %}" class="glass rounded-2xl p-5 tilt" style="text-decoration:none"><div class="text-[24px] mb-2">📝</div><div class="font-semibold" style="color:var(--text)">Blog / Tips</div><div class="text-[13.5px]" style="color:var(--muted)">Styling ideas & gifting guides</div></a>
+    <a href="{% url 'before_after' %}" class="glass rounded-2xl p-5 tilt" style="text-decoration:none"><div class="text-[24px] mb-2">🔀</div><div class="font-semibold" style="color:var(--text)">Before &amp; After Gallery</div><div class="text-[13.5px]" style="color:var(--muted)">Photos transformed into glass</div></a>
+    <a href="{% url 'size_guide' %}" class="glass rounded-2xl p-5 tilt" style="text-decoration:none"><div class="text-[24px] mb-2">📐</div><div class="font-semibold" style="color:var(--text)">Size Guide</div><div class="text-[13.5px]" style="color:var(--muted)">Pick the right dimensions</div></a>
+    <a href="{% url 'photo_guide' %}" class="glass rounded-2xl p-5 tilt" style="text-decoration:none"><div class="text-[24px] mb-2">📷</div><div class="font-semibold" style="color:var(--text)">Photo Preparation Guide</div><div class="text-[13.5px]" style="color:var(--muted)">Get print-ready results</div></a>
+    <a href="{% url 'customer_stories' %}" class="glass rounded-2xl p-5 tilt" style="text-decoration:none"><div class="text-[24px] mb-2">⭐</div><div class="font-semibold" style="color:var(--text)">Customer Stories</div><div class="text-[13.5px]" style="color:var(--muted)">Real pieces from our community</div></a>
+  </div>
+  {% if posts %}
+  <h2 class="display mb-4" style="font-size:24px;color:var(--text)">From the blog</h2>
+  <div class="grid sm:grid-cols-3 gap-5">{% for post in posts %}{% include "store/partials/blog_card.html" %}{% endfor %}</div>
+  {% endif %}
+</div>
+{% endblock %}

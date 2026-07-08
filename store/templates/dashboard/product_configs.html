@@ -1,0 +1,28 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Configurations{% endblock %}{% block heading %}{{ product.name }} · Configurations{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-5">
+  <a href="{% url 'dash_list' 'products' %}" class="text-[14px]" style="color:var(--muted);text-decoration:none">← Products</a>
+  <a href="/studio/?mode=config&product={{ product.id }}" class="rounded-full px-5 py-2.5 text-[13.5px] font-semibold" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);text-decoration:none">✦ Add configuration (opens studio)</a>
+</div>
+<p class="text-[13.5px] mb-4" style="color:var(--muted)">Build a design in the studio and save it as a configuration. Customers can personalise it (photo &amp; text only).</p>
+<div class="glass rounded-2xl" style="overflow:hidden">
+  <table class="dash">
+    <thead><tr><th>Name</th><th>Price</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
+    <tbody>
+      {% for c in configs %}
+      <tr>
+        <td style="color:var(--text)">{{ c.name }}</td>
+        <td style="color:var(--muted)">{% if c.price_override %}Rs {{ c.price_override }}{% else %}by size{% endif %}</td>
+        <td style="color:var(--muted)">{% if c.active %}● active{% else %}○ hidden{% endif %}</td>
+        <td style="text-align:right;white-space:nowrap">
+          <a href="/studio/?config={{ c.id }}&mode=config" class="rounded-lg px-3 py-1.5 text-[13px] glass" style="text-decoration:none;color:var(--text)">Open</a>
+          <a href="{% url 'dash_config_edit' c.id %}" class="rounded-lg px-3 py-1.5 text-[13px] glass" style="text-decoration:none;color:var(--accent)">Price</a>
+          <a href="{% url 'dash_config_delete' c.id %}" class="rounded-lg px-3 py-1.5 text-[13px]" style="text-decoration:none;color:#e7758a">Delete</a>
+        </td>
+      </tr>
+      {% empty %}<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:30px">No configurations yet. Click “Add configuration”.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

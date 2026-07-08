@@ -1,0 +1,16 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Configuration{% endblock %}{% block heading %}Edit configuration{% endblock %}
+{% block content %}
+<a href="{% url 'dash_product_configs' cfg_obj.product_id %}" class="text-[14px]" style="color:var(--muted);text-decoration:none">← {{ cfg_obj.product.name }} configurations</a>
+<form method="post" class="dash-form glass rounded-2xl p-6 mt-4" style="max-width:520px">
+  {% csrf_token %}
+  <div class="space-y-3">
+    {% for f in form %}<div><label>{{ f.label }}</label>{{ f }}{% if f.help_text %}<div class="text-[11.5px] mt-1" style="color:var(--muted)">{{ f.help_text }}</div>{% endif %}</div>{% endfor %}
+  </div>
+  <div class="text-[12px] mt-3" style="color:var(--muted)">Leave price blank to use the shape + size base price. To re-edit the artwork, use “Open” on the configurations list.</div>
+  <div class="mt-5 flex gap-3">
+    <button class="rounded-full px-7 py-3 text-[14.5px] font-semibold" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);border:none">Save</button>
+    <a href="{% url 'dash_product_configs' cfg_obj.product_id %}" class="rounded-full px-7 py-3 text-[14.5px] font-semibold glass" style="color:var(--text);text-decoration:none">Cancel</a>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Dashboard{% endblock %} · Riou Ocean Glass</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'store/app.css' %}">
+  <script src="{% static 'store/theme.js' %}"></script>
+  <style>
+    .dash-form input,.dash-form textarea,.dash-form select{width:100%;background:var(--glass2);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:10px 14px;font:inherit;outline:none}
+    .dash-form textarea{min-height:120px;resize:vertical}
+    .dash-form label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);display:block;margin-bottom:6px}
+    .dash-form input[type=checkbox]{width:auto}
+    .dash-form #id_frames{background:var(--glass2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;max-height:220px;overflow-y:auto}
+    .dash-form #id_frames div{padding:3px 0;font-size:13.5px}
+    .dash-form #id_frames label{display:flex;align-items:center;gap:8px;text-transform:none;font-size:13.5px;letter-spacing:normal;color:var(--text);margin:0}
+    table.dash{width:100%;border-collapse:collapse}
+    table.dash th,table.dash td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);font-size:14px}
+    table.dash th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .side-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;color:var(--muted);text-decoration:none;font-size:14px}
+    .side-link:hover{background:var(--glass)}
+    .side-link.active{background:var(--glass);color:var(--accent)}
+    .side-group summary{list-style:none}
+    .side-group summary::-webkit-details-marker{display:none}
+  </style>
+</head>
+<body>
+<div class="rog" data-theme="dark">
+  <div class="flex" style="min-height:100vh;background:var(--bg)">
+    <!-- sidebar -->
+    <aside class="glass2 p-4 hidden md:flex flex-col no-scrollbar" style="width:248px;border-top:none;border-bottom:none;border-left:none;position:sticky;top:0;height:100vh;overflow-y:auto">
+      <a href="{% url 'dash' %}" class="flex items-center gap-3 mb-6" style="text-decoration:none">
+        {% include "store/partials/logo.html" with h=36 %}
+        <div style="line-height:1.05"><div class="display" style="font-weight:600;color:var(--text)">Dashboard</div><div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)">Content manager</div></div>
+      </a>
+      <nav class="flex flex-col gap-1" style="flex:1">
+        {% for n in nav %}
+          {% if n.group %}
+            <details class="side-group" {% if n.active %}open{% endif %}>
+              <summary class="side-link" style="cursor:pointer">{{ n.icon }} {{ n.label }}<span style="margin-left:auto;font-size:10px;opacity:.6">▾</span></summary>
+              <div style="margin-left:10px;border-left:1px solid var(--border);padding-left:6px;margin-top:2px">
+                {% for c in n.children %}<a href="{{ c.href }}" class="side-link {% if c.active %}active{% endif %}" style="font-size:13px">{{ c.icon }} {{ c.label }}</a>{% endfor %}
+              </div>
+            </details>
+          {% elif n.header %}<div class="px-3 pt-4 pb-1 text-[10px] uppercase" style="letter-spacing:.12em;color:var(--muted)">{{ n.label }}</div>
+          {% else %}<a href="{{ n.href }}" class="side-link {% if n.active %}active{% endif %}">{{ n.icon }} {{ n.label }}</a>{% endif %}
+        {% endfor %}
+      </nav>
+      <div class="mt-4 pt-4" style="border-top:1px solid var(--border)">
+        <a href="{% url 'dash_logout' %}" class="side-link">↩ Log out</a>
+      </div>
+    </aside>
+
+    <!-- main -->
+    <div style="flex:1;min-width:0;min-height:100vh;background:var(--bg)">
+      <header class="glass2 flex items-center justify-between px-5" style="height:60px;border-left:none;border-right:none;border-top:none;position:sticky;top:0;z-index:20">
+        <div class="flex items-center gap-3">
+          <details class="md:hidden relative">
+            <summary class="list-none rounded-lg glass grid place-items-center" style="width:36px;height:36px;color:var(--text)">☰</summary>
+            <div class="absolute left-0 mt-2 glass2 rounded-2xl p-2" style="min-width:200px;z-index:30">
+              {% for n in nav %}{% if n.group %}<div class="px-3 pt-3 pb-1 text-[10px] uppercase" style="letter-spacing:.12em;color:var(--muted)">{{ n.label }}</div>{% for c in n.children %}<a href="{{ c.href }}" class="side-link">{{ c.icon }} {{ c.label }}</a>{% endfor %}{% elif n.header %}<div class="px-3 pt-3 pb-1 text-[10px] uppercase" style="letter-spacing:.12em;color:var(--muted)">{{ n.label }}</div>{% else %}<a href="{{ n.href }}" class="side-link">{{ n.icon }} {{ n.label }}</a>{% endif %}{% endfor %}
+              <a href="{% url 'dash_logout' %}" class="side-link">↩ Log out</a>
+            </div>
+          </details>
+          <span class="display" style="font-size:18px;color:var(--text)">{% block heading %}Overview{% endblock %}</span>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <span class="hidden sm:block text-[13px]" style="color:var(--muted)">{{ request.user.username }}</span>
+          <button data-theme-toggle aria-label="Toggle theme" class="relative rounded-full glass flex items-center" style="width:64px;height:32px;padding:3px">
+            <span style="position:absolute;left:9px;font-size:12px;color:var(--muted)">🌙</span>
+            <span style="position:absolute;right:8px;font-size:12px;color:var(--sand)">☀️</span>
+            <span class="theme-knob rounded-full" style="width:26px;height:26px;background:linear-gradient(135deg,var(--accent),var(--accent2))"></span>
+          </button>
+        </div>
+      </header>
+
+      <main class="p-5 md:p-8" style="max-width:1100px">
+        {% if messages %}{% for m in messages %}
+          <div class="glass2 rounded-xl px-4 py-3 mb-4 text-[14px]" style="color:var(--text)">✓ {{ m }}</div>
+        {% endfor %}{% endif %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+</div>
+</body>
+</html>

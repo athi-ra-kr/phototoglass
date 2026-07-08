@@ -1,0 +1,20 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="max-w-[900px] mx-auto px-6 md:px-8 py-10 md:py-14">
+  {% include "store/partials/pagehead.html" with kicker="Our story" heading="About Us" sub="A Mauritian glass-printing studio turning photos and ideas into lasting art." %}
+  <div class="space-y-4">
+    <div class="glass rounded-2xl p-6">
+      <p class="text-[15px] leading-relaxed" style="color:var(--text)">Riou Ocean Glass began with a simple idea: that the light and colour of Mauritius deserve to be captured in something as clear and lasting as glass. <em>(Edit this text in <code>about.html</code>.)</em></p>
+    </div>
+    <div class="grid sm:grid-cols-3 gap-4">
+      <div class="glass rounded-2xl p-5"><div class="display text-[26px]" style="color:var(--accent)">2019</div><div class="text-[13px]" style="color:var(--muted)">Founded in Mauritius</div></div>
+      <div class="glass rounded-2xl p-5"><div class="display text-[26px]" style="color:var(--accent)">5 mm</div><div class="text-[13px]" style="color:var(--muted)">Premium toughened glass</div></div>
+      <div class="glass rounded-2xl p-5"><div class="display text-[26px]" style="color:var(--accent)">Free</div><div class="text-[13px]" style="color:var(--muted)">Island-wide delivery</div></div>
+    </div>
+    <div class="glass rounded-2xl p-6">
+      <div class="font-semibold mb-2" style="color:var(--text)">What we do</div>
+      <p class="text-[14.5px] leading-relaxed" style="color:var(--muted)">Wall art, personalised gifts, kitchen splashbacks and bespoke B2B pieces — proofed, printed and finished locally. (Dummy content — replace with your real story.)</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

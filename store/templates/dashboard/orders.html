@@ -1,0 +1,22 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Orders{% endblock %}{% block heading %}Orders{% endblock %}
+{% block content %}
+<p class="text-[14px] mb-5" style="color:var(--muted)">Orders received from the storefront.</p>
+<div class="glass rounded-2xl" style="overflow:hidden">
+  <table class="dash">
+    <thead><tr><th>#</th><th>When</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+      {% for o in orders %}
+      <tr>
+        <td style="color:var(--text)">#{{ o.id }}</td>
+        <td style="color:var(--muted);white-space:nowrap">{{ o.created|date:"M j, H:i" }}</td>
+        <td style="color:var(--muted)">{{ o.items.count }}</td>
+        <td style="color:var(--accent)">Rs {{ o.total }}</td>
+        <td><span class="rounded-full px-2 py-0.5 text-[11px]" style="border:1px solid var(--border);color:var(--text)">{{ o.get_status_display }}</span></td>
+        <td style="text-align:right"><a href="{% url 'dash_order' o.id %}" class="rounded-lg px-3 py-1.5 text-[13px] glass" style="text-decoration:none;color:var(--text)">View</a></td>
+      </tr>
+      {% empty %}<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">No orders yet.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

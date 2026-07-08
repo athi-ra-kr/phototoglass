@@ -1,0 +1,32 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="max-w-[1560px] mx-auto px-6 md:px-8 py-10 md:py-14">
+  {% include "store/partials/pagehead.html" with kicker="For business" heading="B2B & Trade" sub="Volume pricing, bespoke sizes and dedicated support for businesses, studios and creative professionals." %}
+  <div class="grid sm:grid-cols-2 gap-4 mb-10">
+    {% for t,s,d,e in segments %}
+    <div class="glass rounded-2xl p-6 tilt fade-up">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="rounded-xl grid place-items-center" style="width:44px;height:44px;background:var(--glass2);font-size:20px">{{ e }}</div>
+        <div><div class="font-semibold text-[17px]" style="color:var(--text)">{{ t }}</div><div class="text-[12.5px]" style="color:var(--accent)">{{ s }}</div></div>
+      </div>
+      <p class="text-[13.5px] leading-relaxed" style="color:var(--muted)">{{ d }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div id="quote" class="glass rounded-3xl p-6 md:p-8 fade-up">
+    <h3 class="display mb-1" style="font-size:24px;color:var(--text)">Quote Request Form</h3>
+    <p class="text-[13.5px] mb-5" style="color:var(--muted)">Tell us about your project and we'll prepare a tailored quote within one business day.</p>
+    <form method="post" class="dash-form grid sm:grid-cols-2 gap-3">
+      {% csrf_token %}
+      {% for f in form %}
+      <div class="{% if f.name == 'message' %}sm:col-span-2{% endif %}">
+        <label class="text-[11px] uppercase block mb-1" style="color:var(--muted)">{{ f.label }}</label>{{ f }}
+      </div>
+      {% endfor %}
+      <div class="sm:col-span-2"><button class="rounded-full px-7 py-3.5 text-[14.5px] font-semibold" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);border:none">Request quote</button></div>
+    </form>
+  </div>
+</div>
+<style>.dash-form input,.dash-form textarea,.dash-form select{width:100%;background:var(--glass2);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:10px 14px;font:inherit;outline:none}</style>
+{% endblock %}

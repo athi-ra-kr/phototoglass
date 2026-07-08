@@ -1,0 +1,26 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Order #{{ order.id }}{% endblock %}{% block heading %}Order #{{ order.id }}{% endblock %}
+{% block content %}
+
+<a href="{% url 'dash_orders' %}" class="text-[14px]" style="color:var(--muted);text-decoration:none">← Orders</a>
+<div class="grid md:grid-cols-[1.4fr_1fr] gap-5 mt-4">
+  <div class="glass rounded-2xl" style="overflow:hidden">
+    <table class="dash"><thead><tr><th>Item</th><th>Detail</th><th>Qty</th><th style="text-align:right">Price</th></tr></thead><tbody>
+      {% for it in order.items.all %}
+      <tr><td style="color:var(--text)">{{ it.title }}{% if it.design %}<div class="text-[11.5px]" style="color:var(--accent)">🎨 custom design · {{ it.design.layers|length }} layer{{ it.design.layers|length|pluralize }}</div><div class="mt-1 flex gap-2">{% if it.render %}<a href="{% url 'item_png' it.id %}" class="rounded-lg px-2.5 py-1 text-[12px] glass" style="text-decoration:none;color:var(--text)">⬇ PNG</a>{% endif %}<a href="{% url 'item_pdf' it.id %}" class="rounded-lg px-2.5 py-1 text-[12px] glass" style="text-decoration:none;color:var(--accent)">⬇ PDF</a></div>{% endif %}</td><td style="color:var(--muted)">{{ it.detail }}</td><td style="color:var(--muted)">{{ it.qty }}</td><td style="text-align:right;color:var(--accent)">Rs {{ it.line_total }}</td></tr>
+      {% endfor %}
+      <tr><td colspan="3" style="text-align:right;color:var(--muted)">Total</td><td style="text-align:right;color:var(--text);font-weight:700">Rs {{ order.total }}</td></tr>
+    </tbody></table>
+  </div>
+  <div class="glass rounded-2xl p-5">
+    <div class="text-[12px] uppercase mb-2" style="color:var(--muted)">Order info</div>
+    <div class="text-[14px] mb-1" style="color:var(--text)">Placed {{ order.created|date:"M j, Y H:i" }}</div>
+    {% if order.customer_name %}<div class="text-[14px] mb-3" style="color:var(--muted)">{{ order.customer_name }}</div>{% endif %}
+    <form method="post" class="dash-form mt-3">{% csrf_token %}
+      <label>Status</label>
+      <select name="status">{% for v,l in order.STATUS %}<option value="{{ v }}" {% if order.status == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
+      <button class="rounded-full px-6 py-2.5 text-[13.5px] font-semibold mt-3" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);border:none">Update</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

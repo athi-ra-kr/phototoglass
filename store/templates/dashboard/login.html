@@ -1,0 +1,35 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard login · Riou Ocean Glass</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'store/app.css' %}">
+  <script src="{% static 'store/theme.js' %}"></script>
+  <style>.dash-form input{width:100%;background:var(--glass2);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:11px 14px;font:inherit;outline:none}</style>
+</head>
+<body>
+<div class="rog" data-theme="dark">
+  <div aria-hidden style="position:fixed;inset:0;overflow:hidden">
+    <div class="float-orb orb-a" style="width:480px;height:480px;top:-140px;left:-120px"></div>
+    <div class="float-orb orb-b" style="width:520px;height:520px;bottom:-180px;right:-120px"></div>
+  </div>
+  <div class="relative grid place-items-center" style="min-height:100vh;z-index:2;padding:20px">
+    <div class="glass2 rounded-3xl p-8 w-full" style="max-width:380px;box-shadow:var(--shadow)">
+      <div class="flex items-center gap-3 mb-6">
+        {% include "store/partials/logo.html" with h=40 %}
+        <div style="line-height:1.05"><div class="display" style="font-size:18px;font-weight:600;color:var(--text)">Content Dashboard</div><div style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">Riou Ocean Glass</div></div>
+      </div>
+      {% if error %}<div class="rounded-xl px-3.5 py-2.5 mb-4 text-[13px]" style="background:rgba(231,117,138,.15);color:#e7758a">{{ error }}</div>{% endif %}
+      <form method="post" class="dash-form space-y-3">
+        {% csrf_token %}
+        <div><label class="text-[12px] block mb-1" style="color:var(--muted)">Username</label><input name="username" autofocus></div>
+        <div><label class="text-[12px] block mb-1" style="color:var(--muted)">Password</label><input name="password" type="password"></div>
+        <button class="w-full rounded-full px-6 py-3 text-[14.5px] font-semibold mt-2" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);border:none">Log in</button>
+      </form>
+      <div class="mt-4 text-[12px] text-center" style="color:var(--muted)">Staff accounts only · <a href="{% url 'home' %}" style="color:var(--accent);text-decoration:none">Back to site</a></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

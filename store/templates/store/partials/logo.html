@@ -1,0 +1,6 @@
+{% if HAS_LOGO_LIGHT and HAS_LOGO_DARK %}
+  <img class="logo-light" src="{{ LOGO_LIGHT_URL }}" alt="{{ SITE.brand }}" style="height:{{ h }}px;width:auto;border-radius:10px">
+  <img class="logo-dark" src="{{ LOGO_DARK_URL }}" alt="{{ SITE.brand }}" style="height:{{ h }}px;width:auto;border-radius:10px">
+{% elif HAS_LOGO_LIGHT %}<img src="{{ LOGO_LIGHT_URL }}" alt="{{ SITE.brand }}" style="height:{{ h }}px;width:auto;border-radius:10px">
+{% elif HAS_LOGO_DARK %}<img src="{{ LOGO_DARK_URL }}" alt="{{ SITE.brand }}" style="height:{{ h }}px;width:auto;border-radius:10px">
+{% else %}<div class="grid place-items-center rounded-xl" style="width:{{ h }}px;height:{{ h }}px;background:linear-gradient(135deg,var(--accent),var(--accent2))"><span style="color:var(--accentText)">≈</span></div>{% endif %}

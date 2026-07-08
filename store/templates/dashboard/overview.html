@@ -1,0 +1,17 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Overview{% endblock %}{% block heading %}Overview{% endblock %}
+{% block content %}
+<p class="text-[14px] mb-6" style="color:var(--muted)">Manage your storefront content. Changes go live on the site instantly.</p>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  {% for s in stats %}
+  <a href="{% if s.key == 'collections' %}{% url 'dash_collections' %}{% elif s.key == 'orders' %}{% url 'dash_orders' %}{% elif s.key == 'shapes' %}{% url 'dash_shapes' %}{% else %}{% url 'dash_list' s.key %}{% endif %}" class="glass rounded-2xl p-5 tilt" style="text-decoration:none;display:block">
+    <div class="text-[26px] mb-1">{{ s.icon }}</div>
+    <div class="display" style="font-size:30px;color:var(--text)">{{ s.count }}</div>
+    <div class="text-[13px]" style="color:var(--muted)">{{ s.label }}</div>
+  </a>
+  {% endfor %}
+  <a href="{% url 'dash_leads' %}" class="glass rounded-2xl p-5 tilt" style="text-decoration:none;display:block">
+    <div class="text-[26px] mb-1">📥</div><div class="display" style="font-size:30px;color:var(--text)">{{ leads }}</div><div class="text-[13px]" style="color:var(--muted)">Leads</div>
+  </a>
+</div>
+{% endblock %}

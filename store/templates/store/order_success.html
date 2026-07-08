@@ -1,0 +1,26 @@
+{% extends "store/base.html" %}
+{% block content %}
+<section class="max-w-lg mx-auto px-5 py-16 text-center" style="position:relative;z-index:2">
+  <div class="glass rounded-3xl p-8">
+    <div style="font-size:42px">✅</div>
+    <h1 class="display mt-2 mb-2" style="font-size:28px;color:var(--text)">Order #{{ order.id }} received</h1>
+    <p class="text-[14.5px] mb-6" style="color:var(--muted)">Thank you{% if order.customer_name %}, {{ order.customer_name }}{% endif %}! We’ll be in touch to confirm the details.</p>
+    {% if has_design %}
+    <div class="space-y-3">
+      {% for it in order.items.all %}{% if it.design %}
+      <div class="glass2 rounded-xl p-4 flex items-center justify-between gap-3" style="flex-wrap:wrap">
+        <span style="color:var(--text);font-size:14px">🎨 {{ it.title }} <span style="color:var(--muted)">· {{ it.detail }}</span></span>
+        <span class="flex gap-2">
+          {% if it.render %}<a href="{% url 'item_png' it.id %}" class="rounded-full px-4 py-2 text-[13px] font-semibold" style="background:var(--glass);color:var(--text);text-decoration:none;border:1px solid var(--border)">⬇ PNG</a>{% endif %}
+          <a href="{% url 'item_pdf' it.id %}" class="rounded-full px-4 py-2 text-[13px] font-semibold" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);text-decoration:none">⬇ PDF</a>
+        </span>
+      </div>
+      {% endif %}{% endfor %}
+    </div>
+    <p class="text-[12px] mt-3" style="color:var(--muted)">Your personalised design, at the exact print size you chose.</p>
+    {% endif %}
+    <div class="mt-7"><a href="{% url 'home' %}" style="color:var(--accent);text-decoration:none">← Back to home</a></div>
+  </div>
+</section>
+{% endblock %}
+{% block whatsapp %}{% endblock %}

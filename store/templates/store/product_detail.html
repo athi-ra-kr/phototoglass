@@ -1,0 +1,54 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="max-w-[1320px] mx-auto px-6 md:px-8 py-10 fade-up">
+  <a href="{% url 'products' %}" class="text-[14px]" style="color:var(--muted);text-decoration:none">← Back to products</a>
+  <div class="grid md:grid-cols-2 gap-10 mt-6">
+    <div class="glass rounded-3xl p-6">
+      <div class="plate" style="height:340px;background:{{ p.gradient }}">
+        {% if p.image %}<img src="{{ p.image.url }}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">{% else %}<span class="motif" style="font-size:96px">{{ p.motif }}</span>{% endif %}
+      </div>
+    </div>
+    <div>
+      <span class="text-[11px] uppercase px-2.5 py-1 rounded-full" style="color:var(--accent);border:1px solid var(--border)">{{ p.type_label }}</span>
+      <h1 class="display tracking-tight mt-3" style="font-size:34px;color:var(--text)">{{ p.name }}</h1>
+      <div class="text-[15px] mt-1" style="color:var(--muted)">{{ p.category_name }}</div>
+      <div class="display mt-3" style="font-size:28px;color:var(--accent)">{% if p.price == 0 %}Custom{% else %}Rs {{ p.price }}{% endif %}</div>
+      <p class="mt-4 text-[14.5px] leading-relaxed" style="color:var(--muted)">{{ p.description|default:"Printed on premium 5 mm glass. Delivered free across Mauritius." }}</p>
+
+      {% with configs=active_configs %}
+      {% if configs %}
+      <div class="mt-6">
+        <div class="text-[12px] uppercase mb-2" style="color:var(--muted)">Personalise a design</div>
+        <div class="space-y-2">
+          {% for cfg in configs %}
+          <a href="/studio/?config={{ cfg.id }}&mode=locked" class="glass2 rounded-xl px-4 py-3 flex items-center justify-between" style="text-decoration:none">
+            <span style="color:var(--text)">🎨 {{ cfg.name }}</span>
+            <span style="color:var(--accent)">Personalise →</span>
+          </a>
+          {% if cfg.stand %}
+          <div class="flex items-center gap-2 px-1 -mt-1 mb-1" style="color:var(--muted);font-size:12.5px">
+            <img src="{{ cfg.stand.thumb_url }}" style="width:28px;height:28px;object-fit:cover;border-radius:6px;border:1px solid var(--border)">
+            <span>Comes with: {{ cfg.stand.name }}</span>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if p.is_personalise %}
+        {% if not configs %}
+        <a href="{% url 'studio' %}" class="mt-6 inline-flex rounded-full px-6 py-3.5 text-[14.5px] font-semibold items-center gap-2" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);text-decoration:none">✦ Design this in the studio</a>
+        {% endif %}
+      {% else %}
+        <form method="post" class="mt-6 flex items-center gap-3">
+          {% csrf_token %}
+          <input type="number" name="qty" value="1" min="1" class="glass rounded-full text-center" style="width:70px;padding:10px;color:var(--text);border:1px solid var(--border);background:transparent">
+          <button class="rounded-full px-6 py-3.5 text-[14.5px] font-semibold flex items-center gap-2" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);border:none">🛒 Add to cart · Rs {{ p.price }}</button>
+        </form>
+      {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+</div>
+{% endblock %}

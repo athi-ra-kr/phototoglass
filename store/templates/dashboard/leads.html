@@ -1,0 +1,23 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Leads{% endblock %}{% block heading %}Leads{% endblock %}
+{% block content %}
+<p class="text-[14px] mb-5" style="color:var(--muted)">Quote requests and contact messages from the site.</p>
+<div class="glass rounded-2xl" style="overflow:hidden">
+  <table class="dash">
+    <thead><tr><th>Type</th><th>Name</th><th>Email</th><th>Details</th><th>When</th></tr></thead>
+    <tbody>
+      {% for l in leads %}
+      <tr>
+        <td><span class="rounded-full px-2 py-0.5 text-[11px]" style="border:1px solid var(--border);color:var(--accent)">{{ l.get_kind_display }}</span></td>
+        <td style="color:var(--text)">{{ l.name }}{% if l.company %}<div class="text-[12px]" style="color:var(--muted)">{{ l.company }}</div>{% endif %}</td>
+        <td style="color:var(--muted)">{{ l.email }}</td>
+        <td style="color:var(--muted);max-width:280px">{% if l.segment %}{{ l.segment }} · {% endif %}{{ l.message|truncatechars:80 }}</td>
+        <td style="color:var(--muted);white-space:nowrap">{{ l.created|date:"M j, H:i" }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px">No leads yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

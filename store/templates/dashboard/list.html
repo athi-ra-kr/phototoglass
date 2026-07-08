@@ -1,0 +1,32 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}{{ cfg.label }}{% endblock %}{% block heading %}{{ cfg.label }}{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-5">
+  <p class="text-[14px]" style="color:var(--muted)">{{ objects|length }} item{{ objects|length|pluralize }}</p>
+  <a href="{% url 'dash_new' key %}" class="rounded-full px-5 py-2.5 text-[13.5px] font-semibold" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);text-decoration:none">+ Add</a>
+</div>
+<div class="glass rounded-2xl" style="overflow:hidden">
+  <table class="dash">
+    <thead><tr><th>Preview</th><th>Item</th><th style="text-align:right">Actions</th></tr></thead>
+    <tbody>
+      {% for o in objects %}
+      <tr>
+        <td style="width:90px">
+          {% if o.thumb_url %}<img src="{{ o.thumb_url }}" style="width:64px;height:42px;object-fit:cover;border-radius:8px">
+          {% elif o.gradient %}<div class="rounded-lg" style="width:64px;height:42px;background:{{ o.gradient }};display:grid;place-items:center">{% if o.motif %}<span style="font-size:20px">{{ o.motif }}</span>{% endif %}</div>
+          {% elif o.color %}<div class="rounded-lg" style="width:64px;height:42px;background:{{ o.color }}"></div>
+          {% else %}<span style="color:var(--muted)">—</span>{% endif %}
+        </td>
+        <td><div class="font-semibold" style="color:var(--text)">{{ o }}</div>
+          <div class="text-[12px]" style="color:var(--muted)">{% if o.active is not None %}{% if o.active %}● active{% else %}○ hidden{% endif %}{% endif %}{% if o.price %} · Rs {{ o.price }}{% endif %}</div></td>
+        <td style="text-align:right;white-space:nowrap">
+          {% if key == 'products' and o.is_personalise %}<a href="{% url 'dash_product_configs' o.pk %}" class="rounded-lg px-3 py-1.5 text-[13px] glass" style="text-decoration:none;color:var(--accent)">Configs</a>{% endif %}
+          <a href="{% url 'dash_edit' key o.pk %}" class="rounded-lg px-3 py-1.5 text-[13px] glass" style="text-decoration:none;color:var(--text)">Edit</a>
+          <a href="{% url 'dash_delete' key o.pk %}" class="rounded-lg px-3 py-1.5 text-[13px]" style="text-decoration:none;color:#e7758a">Delete</a>
+        </td>
+      </tr>
+      {% empty %}<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:30px">Nothing yet. <a href="{% url 'dash_new' key %}" style="color:var(--accent)">Add the first one</a>.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

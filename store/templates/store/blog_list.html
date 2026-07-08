@@ -1,0 +1,10 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="max-w-[1560px] mx-auto px-6 md:px-8 py-10 md:py-14">
+  {% include "store/partials/pagehead.html" with kicker="Inspiration" heading="Blog / Tips" sub="Ideas, guides and behind-the-scenes from the studio." %}
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    {% for post in posts %}{% include "store/partials/blog_card.html" %}{% empty %}
+    <div class="glass rounded-2xl p-8 text-center" style="color:var(--muted)">No posts yet.</div>{% endfor %}
+  </div>
+</div>
+{% endblock %}

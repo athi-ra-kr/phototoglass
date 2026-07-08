@@ -1,0 +1,27 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Collections{% endblock %}{% block heading %}Collections{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-5">
+  <p class="text-[14px]" style="color:var(--muted)">{{ objects|length }} collection{{ objects|length|pluralize }}</p>
+  <a href="{% url 'dash_collection_new' %}" class="rounded-full px-5 py-2.5 text-[13.5px] font-semibold" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--accentText);text-decoration:none">+ Add collection</a>
+</div>
+<div class="glass rounded-2xl" style="overflow:hidden">
+  <table class="dash">
+    <thead><tr><th>Cover</th><th>Title</th><th>Category</th><th>Sizes</th><th style="text-align:right">Actions</th></tr></thead>
+    <tbody>
+      {% for o in objects %}
+      <tr>
+        <td style="width:90px">{% if o.thumb_url %}<img src="{{ o.thumb_url }}" style="width:64px;height:42px;object-fit:cover;border-radius:8px">{% else %}<span style="color:var(--muted)">—</span>{% endif %}</td>
+        <td><div class="font-semibold" style="color:var(--text)">{{ o.title }}</div><div class="text-[12px]" style="color:var(--muted)">{% if o.active %}● active{% else %}○ hidden{% endif %}{% if o.from_price %} · from Rs {{ o.from_price }}{% endif %}</div></td>
+        <td style="color:var(--muted)">{{ o.category.name }}</td>
+        <td style="color:var(--muted)">{{ o.dimensions.count }}</td>
+        <td style="text-align:right;white-space:nowrap">
+          <a href="{% url 'dash_collection_edit' o.pk %}" class="rounded-lg px-3 py-1.5 text-[13px] glass" style="text-decoration:none;color:var(--text)">Edit</a>
+          <a href="{% url 'dash_collection_delete' o.pk %}" class="rounded-lg px-3 py-1.5 text-[13px]" style="text-decoration:none;color:#e7758a">Delete</a>
+        </td>
+      </tr>
+      {% empty %}<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px">No collections yet. <a href="{% url 'dash_collection_new' %}" style="color:var(--accent)">Add one</a>. <br><span class="text-[12px]">Tip: add Categories first.</span></td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

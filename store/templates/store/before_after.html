@@ -1,0 +1,18 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="max-w-[1560px] mx-auto px-6 md:px-8 py-10 md:py-14">
+  {% include "store/partials/pagehead.html" with kicker="Inspiration" heading="Before & After Gallery" sub="See ordinary photos transformed into finished glass art." %}
+  <div class="grid sm:grid-cols-2 gap-6">
+    {% for i in items %}
+    <div class="glass rounded-2xl p-4 fade-up">
+      <div class="grid grid-cols-2 gap-2">
+        <div><div class="text-[11px] uppercase mb-1" style="color:var(--muted)">Before</div><div class="plate" style="height:180px"><img src="{{ i.before_image.url }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div></div>
+        <div><div class="text-[11px] uppercase mb-1" style="color:var(--accent)">After</div><div class="plate" style="height:180px"><img src="{{ i.after_image.url }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div></div>
+      </div>
+      <div class="font-semibold mt-3" style="color:var(--text)">{{ i.title }}</div>
+      {% if i.caption %}<div class="text-[13px]" style="color:var(--muted)">{{ i.caption }}</div>{% endif %}
+    </div>
+    {% empty %}<div class="glass rounded-2xl p-8 text-center" style="color:var(--muted)">No examples yet.</div>{% endfor %}
+  </div>
+</div>
+{% endblock %}
